@@ -44,7 +44,7 @@ export function CreateCard(idNum: string){
 	}
 	
 	const imgUrl :string = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id.toString()}.png`;
-	return (<Card className="w-40 m-4">
+	return (<Card className="w-fit h-fit m-1">
 		<CardHeader className="flex items-center justify-center">
 		<img src={imgUrl} alt="Bulbersor" />
 		</CardHeader>
@@ -71,37 +71,44 @@ export default function RootLayout({
 					<h1 className="my-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Pok&eacute;mon Browser</h1>
 					<h4 className="text-gray-500">Search and find Pok&eacute;mon</h4>
 				</div>
-				{/* <div className="p-5 flex flex-row justify-around items-center ">
-					<h3>Explore Pok&eacute;mon</h3>
-					<div className="flex w-full max-w-sm items-center space-x-2">
-						<Input type="search" placeholder="Find Pok&eacute;mon" />
-						<Button type="submit">Search</Button>
-					</div>
-				</div> */}
 
-				<div className="grid grid-cols-6 grid-rows-4 gap-0">
-					{/* TODO: sort out height of top row */}
-					<div className="h-20 bg-red-50 col-start-2 col-span-4 flex items-center justify-between flex-wrap">
+				<div className="grid grid-cols-6 grid-rows-1 gap-0 gap-y-0 my-5">
+					<div className="col-start-2 row-start-1 col-span-4 flex items-center justify-between flex-wrap">
 						<h3>Explore Pok&eacute;mon</h3>
 						<div className="flex w-full max-w-sm items-center space-x-2 ">
 							<Input type="search" placeholder="Find Pok&eacute;mon" />
 							<Button type="submit">Search</Button>
 						</div>
 					</div>
-					<div className="col-start-2 row-start-2 bg-red-50">{CreateCard("1")}</div>
-					<div className="col-start-3 row-start-2">{CreateCard("2")}</div>
-					<div className="col-start-4 row-start-2">{CreateCard("3")}</div>
-					<div className="col-start-5 row-start-2 bg-blue-50">{CreateCard("4")}</div>
-					<div className="col-start-2 row-start-3">{CreateCard("5")}</div>
-					<div className="col-start-3 row-start-3">{CreateCard("6")}</div>
-					<div className="col-start-4 row-start-3">{CreateCard("7")}</div>
-					<div className="col-start-5 row-start-3">{CreateCard("8")}</div>
-					<div className="col-start-2 row-start-4">{CreateCard("9")}</div>
-					<div className="col-start-3 row-start-4">{CreateCard("10")}</div>
-					<div className="col-start-4 row-start-4">{CreateCard("11")}</div>
-					<div className="col-start-5 row-start-4">{CreateCard("12")}</div>
 				</div>
-				<div className="flex flex-col items-center justify-center border-t border-solid border-gray-400">
+				<div className="grid grid-cols-6 grid-rows-3 gap-0 gap-y-0">
+					{/* TODO: sort out height of top row */}
+					<div className="col-start-2 row-start-1 col-span-4 flex items-center justify-between flex-wrap">
+						{CreateCard("1")}
+						{CreateCard("2")}
+						{CreateCard("3")}
+						{CreateCard("4")}
+					</div>
+					<div className="col-start-2 row-start-2 col-span-4 flex items-center justify-between flex-wrap ">
+						{CreateCard("5")}
+						{CreateCard("6")}
+						{CreateCard("7")}
+						{CreateCard("8")}
+					</div>
+
+					<div className="col-start-2 row-start-3 col-span-4 flex items-center justify-between flex-wrap">
+						{CreateCard("9")}
+						{CreateCard("10")}
+						{CreateCard("11")}
+						{CreateCard("12")}
+					</div>
+				</div>
+
+				<div className="flex flex-row items-center justify-center my-5">
+					<Button className="m-1">Back</Button>
+					<Button className="m-1">Next</Button>
+				</div>
+				<div className="h-20 flex flex-col items-center justify-center border-t border-solid border-gray-400">
 					<h4 className="text-gray-500">Thank you for using Pok&eacute;mon Browser!</h4>
 				</div>
 
