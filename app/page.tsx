@@ -2,11 +2,10 @@
 import "./globals.css";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { CreateCard} from "./pageServer";
 
 
 import { useState } from "react";
-import { CreatePokemonStats } from "./stats";
+import {CreateCard, CreatePokemonStats, getPokemonData } from "./stats";
 
 export function CreateMainHeader(){
 	return (
@@ -25,70 +24,85 @@ export function CreateMainFooter(){
 	)
 }
 
-let searchVal= "";
-export function CreateSearch(statButton1 : Function){
-	const SearchButton = (e) => {searchVal = e; };
+export function CreateSearch(){
 	return(
 		<div className="grid grid-cols-6 grid-rows-1 gap-0 gap-y-0 my-5">
 			<div className="col-start-2 row-start-1 col-span-4 flex items-center justify-between flex-wrap">
 				<h3>Explore Pok&eacute;mon</h3>
 				<div className="flex w-full max-w-sm items-center space-x-2 ">
-					<Input type="search" placeholder="Find Pok&eacute;mon" onValueChange={ (e) => {SearchButton(e)}  }/>
-					<Button type="submit" onClick={ (searchVal) => statButton1(searchVal.target.value) }>Search</Button>
+					<Input type="search" placeholder="Find Pok&eacute;mon" />
+					<Button type="submit" >Search</Button>
 				</div>
 			</div>
 		</div>
 	)
 }
 
+export function get12PokemonData(startId){
+	const pokemon = [];
+	let hasData = true;
+	for(let i = startId; i <= 12; i++)
+	{
+		const data = getPokemonData(i)
+		if(data[0]) //hasData
+		{
+			pokemon.push( data );
+		}
+		else{
+			hasData = hasData & false; //set hasData to false if waiting for any data
+		}
+	}
+	return [hasData, pokemon];
+}
 
-export function CreateCardGrid(pageNum : number, statButton1 : Function){
-	let startNum :number = (pageNum * 12) + 1;
+export function CreateCardGrid(hasData :boolean, pokemon, statButton1 : Function){ //TODO: STEP-2 loop over pokemon and create the cards dynamically
+	if(!hasData){return (<h1 className = 'flex flex-row items-center justify-center'>LOADING ...</h1>)} //TODO: center
+	let startNum :number = pokemon[0][1].id;
 	return(
 		<div>
 			<div className="grid grid-cols-6 grid-rows-3 gap-y-5">
 				<div className="col-start-2 row-start-1 col-span-4 flex items-center justify-between flex-wrap">
-					<Button  onClick={ () => statButton1(startNum)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-						<CreateCard idNum={startNum}/>
+					<Button  onClick={ () => statButton1(0)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+						<CreateCard pokemonJson={pokemon[0]}/>
 					</Button>
-					<Button  onClick={ () => statButton1(startNum + 1)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-						<CreateCard idNum={(startNum + 1)} />
+					<Button  onClick={ () => statButton1(1)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+						<CreateCard pokemonJson={pokemon[1]}/>
 					</Button>
-					<Button  onClick={ () => statButton1(startNum + 2)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-						<CreateCard idNum={(startNum + 2)} />
+					<Button  onClick={ () => statButton1(2)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+						<CreateCard pokemonJson={pokemon[2]}/>
 					</Button>
-					<Button  onClick={ () => statButton1(startNum + 3)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-						<CreateCard idNum={(startNum + 3)} />
+					<Button  onClick={ () => statButton1(3)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+						<CreateCard pokemonJson={pokemon[3]}/>
 					</Button>
 				</div>
 
 				<div className="col-start-2 row-start-2 col-span-4 flex items-center justify-between flex-wrap ">
-				  <Button  onClick={ () => statButton1(startNum + 4)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 4) } />
+				  <Button  onClick={ () => statButton1(4)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[4]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 5)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 5) } />
+				  <Button  onClick={ () => statButton1(5)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[5]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 6)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 6) } />
+				  <Button  onClick={ () => statButton1(6)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[6]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 7)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 7) } />
+				  <Button  onClick={ () => statButton1(7)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[7]} />
 				  </Button>
 				</div>
 
 				<div className="col-start-2 row-start-3 col-span-4 flex items-center justify-between flex-wrap">
-					<Button  onClick={ () => statButton1(startNum + 8)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 8) } />
+					<Button  onClick={ () => statButton1(8)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[8]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 9)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 9) } />
+				  <Button  onClick={ () => statButton1(9)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[9]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 10)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 10) } />
+				  <Button  onClick={ () => statButton1(10)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[10]} />
 				  </Button>
-				  <Button  onClick={ () => statButton1(startNum + 11)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
-					<CreateCard idNum={(startNum + 11) } />
+				  <Button  onClick={ () => statButton1(11)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'>
+					<CreateCard pokemonJson={pokemon[11]} />
 				  </Button>
 				</div>
 			</div>
@@ -97,25 +111,26 @@ export function CreateCardGrid(pageNum : number, statButton1 : Function){
 }
 
 export default function Home() {
-  const [countClick, setCountClick] = useState(0);
-  const [pageData, setPageData] = useState([]);
-  const [pageType, setPageType] = useState("HOME");
-  const homeButton = () => {setPageType("HOME"); };
-  const statButton = (id) => {setPageType("STATS-" + id)};
-  
+	const [countClick, setCountClick] = useState(0);
+	const [pageData, setPageData] = useState([]);
+	const [pageType, setPageType] = useState("HOME");
+	const homeButton = () => {setPageType("HOME"); };
+	const statButton = (index) => {setPageType("STATS-" + index)};
 
-  const pageInc = () => { setCountClick(countClick + 1); };
-  const pageDec = () => { if (countClick > 0) {setCountClick(countClick - 1); } }; 
 
-  console.log(pageType);
-  if(pageType == "HOME")
-  {
+	const pageInc = () => { setCountClick(countClick + 1); };
+	const pageDec = () => { if (countClick > 0) {setCountClick(countClick - 1); } }; 
+
+	let startNum :number = (countClick * 12) + 1;
+	const [hasData, pokemon] = get12PokemonData(startNum);
+
+	if(pageType == "HOME")
+	{
 	return (
 		<div>
-			{ CreatePokemonStats(homeButton, false)}
 			{CreateMainHeader()}
-			{CreateSearch(statButton)}
-			{CreateCardGrid(countClick, statButton)}
+			{CreateSearch()}
+			{CreateCardGrid(hasData, pokemon, statButton)}
 			<div className="flex flex-row items-center justify-center my-5">
 				<Button className="m-1" onClick={pageDec}>Back</Button>
 				<Button className="m-1" onClick={pageInc}>Next</Button>
@@ -123,21 +138,23 @@ export default function Home() {
 			{CreateMainFooter()}
 		</div>
 	);
-  } else if(pageType.includes("STATS")) {
-	let id = pageType.split("-")[1];
-	return(
-	  <div>
-		{ CreatePokemonStats(homeButton, true, id)}
-		<div className="flex flex-row items-center justify-center my-5">
-		  <div className="grid grid-cols-5 grid-rows-5 gap-4 w-3/4">
-			<div className="row-span-5 ">
-			  <Button onClick={homeButton}>Home</Button>
+	} 
+	else if(pageType.includes("STATS")) {
+		let index = parseInt(pageType.split("-")[1], 10);
+		return(
+			<div>
+			{ CreatePokemonStats(pokemon[index], true, index)}
+			<div className="flex flex-row items-center justify-center my-5">
+				<div className="grid grid-cols-5 grid-rows-5 gap-4 w-3/4">
+				<div className="row-span-5 ">
+					<Button onClick={homeButton}>Home</Button>
+				</div>
+				</div>
 			</div>
-		  </div>
-		</div>
-	  </div>
-	)
-  } else {
-	return (<h1>404 PAGE NOT FOUND</h1>);
-  }
+			</div>
+		)
+	} 
+	else {
+		return (<h1>404 PAGE NOT FOUND</h1>);
+	}
 }
