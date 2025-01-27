@@ -97,7 +97,7 @@ export function CreateCardGrid(pageNum : number, statButton1 : Function){
 export default function Home() {
   const [countClick, setCountClick] = useState(0);
   const [pageData, setPageData] = useState([]);
-  const [pageType, setPageType] = useState("STATS-94");
+  const [pageType, setPageType] = useState("HOME");
   const homeButton = () => {setPageType("HOME"); };
   const statButton = (id) => {setPageType("STATS-" + id)};
 
@@ -125,8 +125,13 @@ export default function Home() {
     return(
       <div>
         { CreatePokemonStats(homeButton, true, id)}
-        <Button onClick={homeButton}>Home</Button>
-
+        <div className="flex flex-row items-center justify-center my-5">
+          <div className="grid grid-cols-5 grid-rows-5 gap-4 w-3/4">
+            <div className="row-span-5 ">
+              <Button onClick={homeButton}>Home</Button>
+            </div>
+          </div>
+        </div>
       </div>
     )
   } else {
