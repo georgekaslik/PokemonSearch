@@ -71,20 +71,10 @@ export function CreateReturnButton(pageHomeFunc){
 	);
 }
 
-export function CreatePokemonStats(pageHomeFunc, render : bool, idNum: number = 1){
+export function CreatePokemonStats(pageHomeFunc, render : bool, idNum = 1){
 
 	// const id : number = parseInt(idNum);
-	const id : number = idNum;
-	let idString :string = idNum.toString();
-	if (id >= 1 && id < 10){
-		idString = `#000${idString}`;
-	} else if (id >= 10 && id < 100){
-		idString = `#00${idString}`;
-	} else if (id >= 100 && id < 1000){
-		idString = `#0${idString}`;
-	} else {
-		idString = `#${idString}`;
-	}
+	
 	const gender  : string = "Male/Female"; //couldn't locate this in restapi
 	const categories : string = "N/A"; //couldn't locate this in restapi
 
@@ -100,8 +90,7 @@ export function CreatePokemonStats(pageHomeFunc, render : bool, idNum: number = 
 	useEffect(() => {
 		const fetchData = async () => {
 			try{
-				console.log(id);
-				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id.toString()}`);
+				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${idNum.toString()}`);
 				const data = await response.json();
 				const retrieve = await fetch(data.abilities[0].ability.url);
 				const description = await retrieve.json();
@@ -122,12 +111,25 @@ export function CreatePokemonStats(pageHomeFunc, render : bool, idNum: number = 
 		};
 
 		fetchData();
-	}, [id]);
+	}, [idNum]);
 	// Dirty hack to get around the above state distruction, 
 	// if I have time relocate states above and pass data into function
 	if(!render) {return (<div></div>)} 
 	if (isLoading || isLoad || isLoaded) return (<p>Loading...</p>)
 	if (!posts || !descriptionData || !weaknessDataJson) return (<p>no profile data</p>)
+
+	// const id : number = idNum;
+	const id : number = posts.id;
+	let idString :string = id.toString();
+	if (id >= 1 && id < 10){
+		idString = `#000${idString}`;
+	} else if (id >= 10 && id < 100){
+		idString = `#00${idString}`;
+	} else if (id >= 100 && id < 1000){
+		idString = `#0${idString}`;
+	} else {
+		idString = `#${idString}`;
+	}
 
 		// return(
 		// 	<div>
