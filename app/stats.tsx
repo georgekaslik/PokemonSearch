@@ -149,7 +149,6 @@ export function createContainer2(posts, weaknessDataJson){  // used grid system 
 				{/* {posts.types.map((item, i) => (
 					GetWeaknesses(item.type.url)
 				))} */}
-				
 			<div className = "flex flex-row items-center my-4"> 
 				{ weaknessDataJson &&
 		 			weaknessDataJson.damage_relations.double_damage_from.map((xyz, i) => (

@@ -39,7 +39,7 @@ export function CreateSearch(){
 export function get12PokemonData(startId){
 	const pokemon = []; // array to store the pokemon that has been generated
 	let hasData = true;
-	for(let i = startId; i <= 12; i++) // for loop to collect the 12 pokemon
+	for(let i = startId; i <= (startId + 12); i++) // for loop to collect the 12 pokemon
 	{
 		const data = getPokemonData(i) // link to the function that gets the data from pokeApi 
 		if(data[0]) //hasData
@@ -55,7 +55,7 @@ export function get12PokemonData(startId){
 
 export function CreateCardGrid(hasData :boolean, pokemon, statButton1 : Function){ //TODO: STEP-2 loop over pokemon and create the cards dynamically
 	if(!hasData){return (<h1 className = 'flex flex-row items-center justify-center'>LOADING ...</h1>)} // LOADING message before the screen is generated
-	let startNum :number = pokemon[0][1].id;
+
 	return(
 		<div> 
 			<div className="grid grid-cols-6 grid-rows-3 gap-y-5"> 
@@ -110,16 +110,17 @@ export function CreateCardGrid(hasData :boolean, pokemon, statButton1 : Function
 
 export default function Home() {
 	const [countClick, setCountClick] = useState(0);
-	const [pageData, setPageData] = useState([]);
+	const pageInc = () => { setCountClick(countClick + 1);}; // next button to increase the counter for the page by 1
+	const pageDec = () => { if (countClick > 0) {setCountClick(countClick - 1); } };  // back button to decrease the counter for the page by 1 and not exceed 0
+
 	const [pageType, setPageType] = useState("HOME"); // this sets the starting page as the Home page
 	const homeButton = () => {setPageType("HOME"); }; // this links the home button on stats page to take the user back to the home 
 	const statButton = (index) => {setPageType("STATS-" + index)}; // this allows the user to access the stats and of the pokemon they selected
 
-
-	const pageInc = () => { setCountClick(countClick + 1); }; // next button to increase the counter for the page by 1
-	const pageDec = () => { if (countClick > 0) {setCountClick(countClick - 1); } };  // back button to decrease the counter for the page by 1 and not exceed 0
-
-	let startNum :number = (countClick * 12) + 1; // generate the 12 cards per page +1 when its a next page so the next set of 12 pokemon will be shown
+	
+	
+	const startNum :number = (countClick * 12) + 1; // generate the 12 cards per page +1 when its a next page so the next set of 12 pokemon will be shown
+	
 	const [hasData, pokemon] = get12PokemonData(startNum);
 
 	if(pageType == "HOME") // if home use these function and button to build the page
