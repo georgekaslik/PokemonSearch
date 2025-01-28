@@ -66,7 +66,7 @@ export function get12PokemonData(startId){
 }
 
 export function CreateCardGrid(hasData :boolean, pokemon, statButton1 : Function){ 
-	if(!hasData){return (<h1 className = 'flex flex-row items-center justify-center'>LOADING ...</h1>)} // LOADING message before the screen is generated, while waiting for data
+	if(!hasData){return (<div className = 'flex flex-row items-center justify-center'><div className="loader"></div></div>)} // LOADING message before the screen is generated, while waiting for data
 
 	const numRows = 3;
 	const numCols = 4;
