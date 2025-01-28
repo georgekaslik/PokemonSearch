@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "@/components/ui/progress"; //npx shadcn@latest add progress
 import {useState, useEffect } from 'react';
 
 import {
@@ -11,7 +11,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import React, {Suspense} from 'react';
+import React, {Suspense} from 'react'; //allows to fallback to allow the children to finish loading
 
 export function CreateTitle(){
   return(
@@ -21,14 +21,14 @@ export function CreateTitle(){
 
 export function CreateHeaderBox(imgUrl, text){
   return(
-	<div >
+	<div > 
 	<div className="absolute z-10 w-screen flex flex-col items-center justify-center my-20">
 		<img className=" size-32 border-4 p-4 bg-gray-200 border-gray-100 rounded-full my-5" src={imgUrl}/>
 		<h3 className="-bottom-0 font-extrabold">{text}</h3>
 	</div>
     <div className="z-1 box-border h-40 max-w-full bg-gray-500"></div>
 	<div className="z-1 box-border h-40 max-w-full"></div>
-	</div>
+	</div> // produces the pokemon in a circular container and also has the grey board set behind the image using z axis
   )
 
 }
@@ -38,20 +38,19 @@ export function CreatePokemonDescription(){
     <div className="flex flex-row items-center justify-center my-5">
       <div className="my-5 w-3/4 bg-gray-200 shadow box-border h-20 flex flex-row items-center rounded-md ">
         <img className="size-20 border-4 p-4 bg-white rounded-full" src="https://archives.bulbagarden.net/media/upload/f/f6/Dream_Cherish_Ball_Sprite.png"/>
-        <h2 className="inline-block w-7/8">For some time after its birth,</h2>
-      </div>
-    </div>
-
+        <h2 className="inline-block w-7/8">For some time after its birth,</h2> 
+      </div> 
+    </div> // couldnt find the pokerball in the api sohad to find it else where and also was unable to find the description.
   )
 }
 
-export function CreateReturnButton(pageHomeFunc){
+export function CreateReturnButton(pageHomeFunc){ // button for the home page
 	return (
 		<Button onClick={() => {pageHomeFunc(); }}>Home</Button>
-	);
+	); 
 }
 
-export function getPokemonData(id){
+export function getPokemonData(id){ // retieves the data from pokeapi for the stats
 
 	const [posts, setData] = useState(null)
 	const [isLoading, setLoading] = useState(true)
@@ -65,11 +64,11 @@ export function getPokemonData(id){
 	useEffect(() => { 
 		const fetchData = async () => {
 			try{
-				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id.toString()}`);
+				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id.toString()}`); // link to the api
 				const data = await response.json();
-				const retrieve = await fetch(data.abilities[0].ability.url);
+				const retrieve = await fetch(data.abilities[0].ability.url); // route in the api to exstract descripition
 				const description = await retrieve.json();
-				const weaknessDataJson = await fetch(data.types[0].type.url);
+				const weaknessDataJson = await fetch(data.types[0].type.url);// route in the api to exstract descripition
 				const weaknessData = await weaknessDataJson.json();
 
 				// TODO: loop over type to access all weaknesses
@@ -94,14 +93,15 @@ export function getPokemonData(id){
 	return [hasData, posts, descriptionData, weaknessDataJson]
 }
 
-export function createContainer1(posts, categories, gender){
-	return (
+export function createContainer1(posts, categories, gender){ // used grid system to do the layout of the stats
+	return ( // this is only one container for the stats
 		<div className="row-span-5 rounded-md border-4 border-gray-100  p-10">
 			<div className="flex flex-row items-center  my-4">
 				<h3 className= "font-extrabold">Height</h3>
-			</div>
+			</div> 
 				<div className="flex flex-row items-center">
-					<p>{posts.height/10}</p>
+					<p>{posts.height/10}</p> 
+					{/* This is dived by 10 to have it put into meters */}
 					<p>m</p>
 				</div>
 			<div className="flex flex-row items-center  my-4">
@@ -109,6 +109,7 @@ export function createContainer1(posts, categories, gender){
 			</div>
 				<div className="flex flex-row items-center">
 					<p>{categories}</p>
+				{/* unable to find the catagories. expeshally the exmaple which was given */}
 				</div>
 			<div className="flex flex-row items-center  my-4">
 				<h3 className= "font-extrabold">Weight</h3>
@@ -116,52 +117,51 @@ export function createContainer1(posts, categories, gender){
 				<div className="flex flex-row items-center ">
 					<p>{posts.weight/10}</p>
 					<p> kg</p>
+				{/* This is dived by 10 to have it put into kg */}
 				</div>
 			<div className="flex flex-row items-center my-4">
 				<h3 className= "font-extrabold">Gender</h3>
 			</div>
 			<div className="flex flex-row items-center">
 				<p>{gender}</p>
+				{/* unable to find the gender in the api */}
 			</div>
 		</div>
 	);
 }
 
-export function createContainer2(posts, weaknessDataJson){
+export function createContainer2(posts, weaknessDataJson){  // used grid system to do the layout of the stats
 	return(
 		<div className="col-span-2 row-span-2 col-start-2 row-start-1 rounded-md border-4 border-gray-100 p-10">
-							<div className="flex flex-row items-center my-4">
-								<h3 className= "font-extrabold">Type</h3>
-							</div>
-								<div className="flex flex-row items-center my-4r">
-									{ posts &&
-										posts.types.map((item, i) => (
-											<Button className = "m-1" key={i}>{item.type.name}</Button>
-										))
-									}
-                				</div>
-
-
-							<div className="flex flex-row items-center my-4">
-								<h3 className= "font-extrabold">Weakness</h3>
-							</div>
-								<div className="flex flex-row items-center my-4">
-									{/* {posts.types.map((item, i) => (
-										GetWeaknesses(item.type.url)
-									))} */}
-									<div>
-										{ weaknessDataJson &&
-		 									weaknessDataJson.damage_relations.double_damage_from.map((xyz, i) => (
-		 									<Button className = "m-1" key={i}>{xyz.name}</Button>
-		 									))
-		 								}
-		 							</div>
-								</div>
-						  </div>
+			<div className="flex flex-row items-center my-4">
+				<h3 className= "font-extrabold">Type</h3>
+			</div>
+			<div className="flex flex-row items-center my-4r">
+				{ posts &&
+					posts.types.map((item, i) => (
+						<div className = "bg-slate-950 px-4 py-1 rounded-md text-white ml-1" key={i}>{item.type.name}</div> //TODO: change these from buttons to something else
+					))
+				} {/* due to the fact that the rout for types have two separet points it needed to maped to loop it */}
+            </div>
+			<div className="flex flex-row items-center my-4">
+				<h3 className= "font-extrabold">Weakness</h3>
+			</div>
+				{/* {posts.types.map((item, i) => (
+					GetWeaknesses(item.type.url)
+				))} */}
+				
+			<div className = "flex flex-row items-center my-4"> 
+				{ weaknessDataJson &&
+		 			weaknessDataJson.damage_relations.double_damage_from.map((xyz, i) => (
+		 			<div className = "bg-slate-950 px-4 py-1 rounded-md text-white ml-1" key={i}>{xyz.name}</div>
+		 			))
+		 		} {/* each type has its own weaknesses so ive maped it to get all the weakness from 1 type but havnet for the second */}
+		 	</div>
+		</div>
 	);
 }
 
-export function createContainer3(posts, descriptionData){
+export function createContainer3(posts, descriptionData){ //its the third grid and displays abilities
 	return (
 		<div className="col-span-2 row-span-2 col-start-4 row-start-1 rounded-md border-4 border-gray-100 p-10">
 			<div className="flex flex-row items-center my-4">
@@ -172,21 +172,22 @@ export function createContainer3(posts, descriptionData){
 			</div>
 			<div className="flex flex-row items-center my-4">
 				{descriptionData &&
-						descriptionData.flavor_text_entries[45].flavor_text}
+						descriptionData.flavor_text_entries[0].flavor_text}
 			</div>
-		</div>
+		</div> // TODO: fix the descpition [45] to only show english
 	)
+	
 }
 
-export function createContainer4(posts){
-	return(
+export function createContainer4(posts){ // this is the fouth container for the grid and shows the stats bars
+	return( // loading bars are made by the progress installation values are taken from the api
 		<div className="col-span-4 row-span-3 col-start-2 row-start-3 rounded-md border-4 border-gray-100 p-10">
 			<div className="flex flex-row justify-between items-center my-4">
 				<h3 className= "font-extrabold">HP</h3>
 				<div className="w-3/4">
 					<Progress value={posts.stats[0].base_stat} />
 				</div>
-			</div>
+			</div> 
 
 			<div className="flex flex-row justify-between items-center my-4">
 				<h3 className= "font-extrabold">Attack</h3>
@@ -229,7 +230,7 @@ export function createContainer4(posts){
 	)
 }
 
-export function idTo4Digits(id){
+export function idTo4Digits(id){ // for loop for the ids so they are printed in the correct layout
 	let idString :string = id.toString();
 	if (id >= 1 && id < 10){
 		idString = `#000${idString}`;
@@ -279,7 +280,7 @@ export function CreateCard({pokemonJson} ){
 
 export function CreatePokemonStats(pokemon){
 
-	if(!pokemon[0]) { return (<h1>LOADING ...</h1>)}
+	if(!pokemon[0]) { return (<h1>LOADING ...</h1>)} // if no pokemon found say loading
 	const gender  : string = "Male/Female"; //couldn't locate this in restapi
 	const categories : string = "N/A"; //couldn't locate this in restapi
 	const [hasData, posts, descriptionData, weaknessDataJson] = pokemon;
@@ -290,10 +291,9 @@ export function CreatePokemonStats(pokemon){
 	const id : number = posts.id;
 	let idString :string = 	idTo4Digits(id);
 
-// ________________________________________________________________________________________________________
 	const imgUrl :string = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id.toString()}.png`;
 
-	return(
+	return( // what is passed tough so it can be built in pages
 		<div>
 		{CreateTitle()}
 		{CreateHeaderBox(imgUrl, `${posts.name} ${idString}`)}
