@@ -44,13 +44,13 @@ export function CreatePokemonDescription(){
   )
 }
 
-export function CreateReturnButton(pageHomeFunc){ // button for the home page
+export function CreateReturnButton(pageHomeFunc){ // button to return to the home page
 	return (
 		<Button onClick={() => {pageHomeFunc(); }}>Home</Button>
 	); 
 }
 
-export function getPokemonData(id){ // retieves the data from pokeapi for the stats
+export function getPokemonData(id){ // retieves the data from pokeapi for the stats, I have not provided a type to allow for name or number 
 
 	const [posts, setData] = useState(null)
 	const [isLoading, setLoading] = useState(true)
@@ -66,12 +66,12 @@ export function getPokemonData(id){ // retieves the data from pokeapi for the st
 			try{
 				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id.toString()}`); // link to the api
 				const data = await response.json();
-				const retrieve = await fetch(data.abilities[0].ability.url); // route in the api to exstract descripition
+				const retrieve = await fetch(data.abilities[0].ability.url); // route in the api to extract descripition
 				const description = await retrieve.json();
-				const weaknessDataJson = await fetch(data.types[0].type.url);// route in the api to exstract descripition
+				const weaknessDataJson = await fetch(data.types[0].type.url);// route in the api to extract descripition
 				const weaknessData = await weaknessDataJson.json();
 
-				// TODO: loop over type to access all weaknesses
+				// TODO: loop over type to access all weaknesses, at current only loops over the 1st type and therefore only gets the weaknesses for this type
 
 				setData(data)
 				setLoading(false);
@@ -109,7 +109,7 @@ export function createContainer1(posts, categories, gender){ // used grid system
 			</div>
 				<div className="flex flex-row items-center">
 					<p>{categories}</p>
-				{/* unable to find the catagories. expeshally the exmaple which was given */}
+				{/* unable to find the categories. especially the example which was given */}
 				</div>
 			<div className="flex flex-row items-center  my-4">
 				<h3 className= "font-extrabold">Weight</h3>
@@ -141,7 +141,7 @@ export function createContainer2(posts, weaknessDataJson){  // used grid system 
 					posts.types.map((item, i) => (
 						<div className = "bg-slate-950 px-4 py-1 rounded-md text-white ml-1" key={i}>{item.type.name}</div> //TODO: change these from buttons to something else
 					))
-				} {/* due to the fact that the rout for types have two separet points it needed to maped to loop it */}
+				} {/* due to the fact that the rout for types have two separate points it needed to mapped to loop it */}
             </div>
 			<div className="flex flex-row items-center my-4">
 				<h3 className= "font-extrabold">Weakness</h3>
@@ -154,7 +154,7 @@ export function createContainer2(posts, weaknessDataJson){  // used grid system 
 		 			weaknessDataJson.damage_relations.double_damage_from.map((xyz, i) => (
 		 			<div className = "bg-slate-950 px-4 py-1 rounded-md text-white ml-1" key={i}>{xyz.name}</div>
 		 			))
-		 		} {/* each type has its own weaknesses so ive maped it to get all the weakness from 1 type but havnet for the second */}
+		 		} {/* each type has its own weaknesses so ive mapped it to get all the weakness from 1 type but haven't for the second */}
 		 	</div>
 		</div>
 	);
@@ -171,14 +171,14 @@ export function createContainer3(posts, descriptionData){ //its the third grid a
 			</div>
 			<div className="flex flex-row items-center my-4">
 				{descriptionData &&
-						descriptionData.flavor_text_entries[0].flavor_text}
+						descriptionData.flavor_text_entries[45].flavor_text}
 			</div>
-		</div> // TODO: fix the descpition [45] to only show english
+		</div> // TODO: fix the description [45] to only show english, have seen this show other languages e.g. butterfree  
 	)
 	
 }
 
-export function createContainer4(posts){ // this is the fouth container for the grid and shows the stats bars
+export function createContainer4(posts){ // this is the fourth container for the grid and shows the stats bars
 	return( // loading bars are made by the progress installation values are taken from the api
 		<div className="col-span-4 row-span-3 col-start-2 row-start-3 rounded-md border-4 border-gray-100 p-10">
 			<div className="flex flex-row justify-between items-center my-4">
@@ -256,10 +256,10 @@ export function CreateCard({pokemonJson} ){
         <Suspense fallback = {<div>Loading...</div>}>
             {/* <Button onClick={ () => statButton(6)} className='flex-1 w-fit h-fit bg-transparent p-0 rounded-2xl m-5'> */}
                 <Card className="w-full h-fit">
-                    <CardHeader className="flex items-center justify-center">
+                    <CardHeader className="flex items-center justify-center bg-gray-200 rounded-t-xl">
                         <img src={imgUrl} alt="Bulbersor" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-5">
                         <CardTitle>{posts.name}</CardTitle>
                         <CardDescription>{idString}</CardDescription>
                     </CardContent>
