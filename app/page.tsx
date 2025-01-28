@@ -122,17 +122,20 @@ export default function Home() {
 	const startNum :number = (countClick * 12) + 1; // generate the 12 cards per page +1 when its a next page so the next set of 12 pokemon will be shown
 	
 	const [hasData, pokemon] = get12PokemonData(startNum);
-
+	let ifSearch = false;
 	if(pageType == "HOME") // if home use these function and button to build the page
 	{
+		let backButton = (countClick == 0 || ifSearch) ? <Button className="m-1  bg-gray-500" onClick={pageDec}>&#8592; Back</Button> : <Button className="m-1" onClick={pageDec}>&#8592; Back</Button>;
+		let forwardButton = (ifSearch) ? <Button className="m-1  bg-gray-500" onClick={pageInc}>Next &#8594;</Button> : <Button className="m-1" onClick={pageInc}>Next &#8594;</Button>;
+		
 	return (
 		<div>
 			{CreateMainHeader()}
 			{CreateSearch()}
 			{CreateCardGrid(hasData, pokemon, statButton)}
 			<div className="flex flex-row items-center justify-center my-5">
-				<Button className="m-1" onClick={pageDec}>Back</Button>
-				<Button className="m-1" onClick={pageInc}>Next</Button>
+			{backButton}
+			{forwardButton}
 			</div>
 			{CreateMainFooter()}
 		</div>
